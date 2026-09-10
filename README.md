@@ -18,6 +18,7 @@ Internet-independent embedded communication system for vehicle convoys using lon
 ### V1 — Text Communication
 ### V2 — GPS & Emergency Communication
 ### V3 — Voice Communication
+### V4 — Automotive/Advanced Embedded Direction
 
 ## Research Questions
 
