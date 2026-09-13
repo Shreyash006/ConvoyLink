@@ -73,7 +73,7 @@ Demonstrate communication and basic coordination between three vehicles/nodes op
 
 ---
 
-# V3 — Advanced Communication
+# V3 — Reliable Communication Protocol
 
 ### Objective
 
