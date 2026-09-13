@@ -140,7 +140,7 @@ V2
 3-Node Convoy System
         ↓
 V3
-Advanced Communication & Networking
+Reliable Communication Protocol
         ↓
 V4
 Automotive / Advanced Embedded Systems
