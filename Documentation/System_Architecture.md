@@ -57,7 +57,7 @@ V1 operates strictly as a two-node, single-hop point-to-point architecture:
 * **Compute Engine:** Espressif ESP32 dual-core Xtensa LX6 (Core 0 allocated to protocol/radio handling; Core 1 allocated to UI/peripherals).
 * **Display Interface:** 0.96-inch SSD1306 OLED (I2C interface: SCL, SDA, 3.3V, GND).
 * **Input Interface:** Tactile push-button triggering interrupt-driven status/test packet dispatch.
-* **RF Transceiver:** Sub-GHz Long-Range Transceiver Module (Hardware selection TBD).
+* **RF Transceiver:** Sub-GHz Long-Range Transceiver Module (LoRa sx1278).
 * **Power Conditioning:** 5V/3.3V DC-DC step-down regulation for automotive bus compatibility.
 
 ### 4.3 V1 Data Flow Model
