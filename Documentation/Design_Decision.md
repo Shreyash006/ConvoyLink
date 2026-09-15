@@ -57,4 +57,17 @@ The system will be evaluated using measurable parameters such as:
 - Power consumption
 - Performance under obstacles and movement
 
+## DD-002: Selection of 433 MHz Operating Frequency
+
+* **Status:** Decided
+* **Date:** September 2026
+* **Context:** ConvoyLink V1 requires a sub-GHz physical layer to evaluate point-to-point vehicle links under varying terrain and obstacle conditions.
+* **Decision:** Selected the 433 MHz band using Semtech SX1278 transceivers (e.g., Ra-02 modules).
+* **Technical Justification:**
+  1. **Obstacle Penetration:** Longer wavelength (~69.2 cm) provides lower path attenuation around terrain obstructions and foliage compared to 868 MHz and 2.4 GHz.
+  2. **Hardware Availability:** Readily available breakout boards with robust driver support (`RadioLib` / `LoRa.h`).
+* **Constraints & Trade-offs:**
+  1. **Radiated Power Limits:** Operating within the 433.05–434.79 MHz window in India requires software-enforced output limits (≤ 10 mW / 10 dBm).
+  2. **Antenna Scale:** Quarter-wave elements require ~17.3 cm clearance, which must be accounted for during field testing.
+
 Actual measurements will be added to the repository as development progresses.
