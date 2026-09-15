@@ -57,7 +57,7 @@ The system will be evaluated using measurable parameters such as:
 - Power consumption
 - Performance under obstacles and movement
 
-## DD-002: Selection of 433 MHz Operating Frequency
+ ## DD-002: Selection of 433 MHz Operating Frequency
 
 * **Status:** Decided
 * **Date:** September 2026
@@ -67,7 +67,8 @@ The system will be evaluated using measurable parameters such as:
   1. **Obstacle Penetration:** Longer wavelength (~69.2 cm) provides lower path attenuation around terrain obstructions and foliage compared to 868 MHz and 2.4 GHz.
   2. **Hardware Availability:** Readily available breakout boards with robust driver support (`RadioLib` / `LoRa.h`).
 * **Constraints & Trade-offs:**
-  1. **Radiated Power Limits:** Operating within the 433.05–434.79 MHz window in India requires software-enforced output limits (≤ 10 mW / 10 dBm).
+  1. **Radiated Power Limits:** Operating within the 433.05–434.79 MHz window in India requires software-enforced output limits (≤ 10 mW / 10 dBm e.r.p.), per WPC delicensing rules.
   2. **Antenna Scale:** Quarter-wave elements require ~17.3 cm clearance, which must be accounted for during field testing.
+  3. **Bandwidth & Duty Cycle Compliance:** The delicensed 433–434.79 MHz allocation additionally limits channel bandwidth to 10 kHz with a 10% duty cycle — narrower than LoRa's typical 125 kHz default configuration. V1 will document the actual bandwidth/duty-cycle settings used in firmware and note this gap as a compliance consideration for any future field or public deployment.
 
 Actual measurements will be added to the repository as development progresses.
