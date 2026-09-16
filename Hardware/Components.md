@@ -37,18 +37,19 @@ The following components are currently available for prototype development.
 - 4-pin LEDs ×2
 - 2-pin LEDs ×20
 
+  
 ## Components Required for ConvoyLink V1
 
-The core V1 prototype requires:
+The core V1 prototype (two-node configuration) requires:
 
-- ESP32 ×3
-- OLED display ×3
-- Push buttons ×3
-- Long-range wireless transceiver modules ×3
-- Suitable antennas
+- ESP32 ×2
+- 0.96" OLED display ×2
+- Push button ×2
+- Semtech SX1278 (433 MHz) LoRa transceiver module ×2
+- 433 MHz antennas ×2
 - Connecting wires and breadboards
 
-The long-range wireless transceiver and antenna specifications will be selected after evaluating the communication requirements and applicable requirements for operation in India.
+One additional ESP32 and OLED are available in inventory as spares or for early V2 (3-node) experimentation once V1 is validated.
 
 ## V1 Hardware Focus
 
