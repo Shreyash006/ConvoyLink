@@ -17,32 +17,18 @@ The core research objective of this platform is to quantify how low-cost embedde
 * **RQ4 (Environmental Occlusion):** What is the observed link margin attenuation introduced by static obstacles (e.g., foliage, building corners, vehicular chassis)?
 
 ---
-
 ## 3. Layered Architectural Model
+
 To facilitate long-term extensibility without necessitating driver-level refactoring, ConvoyLink implements a decoupled, layered architectural model:
 
-+-------------------------------------------------------------+
-|                      APPLICATION LAYER                      |
-| V1: Diagnostic Text Console | V2: Telemetry / SOS Alerts    |
-+-------------------------------------------------------------+
-                              |
-+-------------------------------------------------------------+
-|                        NETWORK LAYER                        |
-| V1: Static Peer Addressing (Node_ID: 0x01 <-> 0x02)         |
-| V2: Forwarding Tables, Linear Relay Engine (Planned)        |
-+-------------------------------------------------------------+
-                              |
-+-------------------------------------------------------------+
-|                      COMMUNICATION LAYER                    |
-| Framing (Preamble, Sync Word, Length, CRC-16 Checksum)      |
-| Serialization / Deserialization Protocols                   |
-+-------------------------------------------------------------+
-                              |
-+-------------------------------------------------------------+
-|                       PHYSICAL LAYER                        |
-| Microcontroller (ESP32) <-> SPI Bus <-> Transceiver (TBD)   |
-| Antenna Interface | Power Regulation (3.3V LDO Rails)       |
-+-------------------------------------------------------------+
+| Layer | V1 Scope | Future Scope |
+|---|---|---|
+| **Application Layer** | Diagnostic text console | V2: Telemetry / SOS alerts |
+| **Network Layer** | Static peer addressing (Node_ID: 0x01 ↔ 0x02) | V2: Forwarding tables, linear relay engine (planned) |
+| **Communication Layer** | Framing (preamble, sync word, length, CRC-16 checksum), serialization/deserialization protocols | — |
+| **Physical Layer** | Microcontroller (ESP32) ↔ SPI bus ↔ Transceiver (SX1278) ↔ antenna interface; power regulation (3.3V LDO rails) | — |
+
+Each layer exposes a fixed interface to the layer above it, so that hardware or protocol substitutions (e.g., a different transceiver in a later version) can occur without modifying application-level logic.
 
 ---
 
@@ -61,35 +47,20 @@ V1 operates strictly as a two-node, single-hop point-to-point architecture:
 * **Power Conditioning:** 5V/3.3V DC-DC step-down regulation for automotive bus compatibility.
 
 ### 4.3 V1 Data Flow Model
-[User Input Trigger]
-│
-▼
-[Message Assembly Engine]
-│
-▼
-[CRC-16 Framing & Serialization]
-│
-▼
-[SPI Bus Transfer]
-│
-▼
-[RF Transmitter Module]
-)))) Sub-GHz RF Packet (Air Interface) ((((
-│
-▼
-[RF Receiver Module]
-│
-▼
-[SPI Bus Transfer]
-│
-▼
-[Packet Demux & CRC]
-│
-▼
-[Display Buffer Update]
-│
-▼
-[SSD1306 OLED Frame]
+
+The end-to-end data path for a single message, from user trigger to remote display, proceeds as a linear pipeline:
+
+1. **User Input Trigger** — push-button interrupt initiates message dispatch
+2. **Message Assembly Engine** — payload constructed in firmware
+3. **CRC-16 Framing & Serialization** — preamble, sync word, length, and checksum applied
+4. **SPI Bus Transfer** — framed packet passed from ESP32 to RF transmitter module
+5. **RF Transmitter Module** — packet modulated onto the sub-GHz carrier
+6. **↓ Air Interface (Sub-GHz RF Packet) ↓**
+7. **RF Receiver Module** — remote node demodulates incoming packet
+8. **SPI Bus Transfer** — received packet passed to remote ESP32
+9. **Packet Demux & CRC Verification** — frame validated and unpacked
+10. **Display Buffer Update** — decoded message written to frame buffer
+11. **SSD1306 OLED Frame** — message rendered on remote node's display
 ---
 
 ## 5. Software Modularity & Decoupling
