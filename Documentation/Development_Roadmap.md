@@ -130,6 +130,44 @@ Develop an advanced embedded-system architecture demonstrating selected automoti
 
 ---
 
+## Production Engineering Trajectory (V1 → V4)
+
+To prevent premature optimization while maintaining clear architectural progression, ConvoyLink follows an iterative, data-driven hardening model. Higher-tier engineering practices are introduced only after the immediate lower-tier assumptions are physically validated.
+
+### Version Matrix & Scope Boundaries
+
+| Capability Domain | V1 (Baseline Link Validation) | V2 (Telemetry & Linear Relay) | V3 (Systems & Driver Hardening) | V4 (Automotive / Hardware Hardening) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Node Count & Topology** | 2 Nodes (Point-to-Point) | 3 Nodes (Linear Relay) | Multi-Node Cluster / Mesh | Scaled Convoy Fleet |
+| **Payload Scope** | Fixed Text / Status Pings | GPS Telemetry + Heading Vectors | Compressed Telemetry + ACK/Retries | Prioritized Stream (Telemetry + Voice/Alerts) |
+| **Firmware Runtime** | Arduino-ESP32 + FreeRTOS Tasks | FreeRTOS Queues + Task Notifications | Pure ESP-IDF (C++17) / Zephyr | Safety-Critical RTOS Constraints |
+| **RF Transceiver Stack** | RadioLib (SX1278 SPI) + Basic Frame (Preamble/Sync/Length/CRC-16) | RadioLib + Structured Telemetry Serialization (Binary-Packed Payloads) | Custom Bare-Metal SPI Register Driver | Dual-Band / Diversity Link |
+| **MAC Layer** | Basic Broadcast | Measured CSMA/CA or Slotted ALOHA | Deterministic TDMA + ACK/Retries | Priority Emergency Preemption |
+| **Power & Hardware** | Breadboard / Dev-kits (USB 5V) | Perfboard / Modular Enclosure | Custom 2-Layer KiCad PCB | 4-Layer PCB + Automotive Load-Dump Protection |
+| **Display & UI** | 0.96" SSD1306 (U8g2 / Page Buffer) | SSD1306 Vector Heading / Radar | Color TFT (ST7789) + Lightweight Canvas | Automotive Dash-Mount Display / LVGL |
+
+---
+
+### Technical Justification for Phasing
+
+#### 1. Why FreeRTOS under Arduino Core for V1?
+
+Rather than taking on the setup overhead of raw ESP-IDF, V1 leverages the FreeRTOS scheduler baked into the ESP32 Arduino framework to ensure clean task boundaries early:
+
+- Core 0: Dedicated RF RX/TX and radio interrupt handlers (`Task_RF`).
+- Core 1: User-input handling (buttons/encoders) and OLED display refresh (`Task_UI`).
+- Inter-Task Communication: Handled via fixed-size FreeRTOS queues with zero dynamic memory allocation.
+
+#### 2. Why RadioLib before Bare-Metal SPI Drivers?
+
+V1 is an empirical validation of the basic RF link budget, line-of-sight range, and base packet transmission. Using RadioLib establishes a known-good baseline for packet error rate (PER) and RSSI/SNR profiles. In V3, writing a custom register-level SX1278 SPI driver will be validated against this baseline data.
+
+#### 3. Why Basic Broadcast for V1 (Deferring CSMA & ACK/Retries)?
+
+V1 isolates the physical layer and baseline firmware scheduler. Adding retransmission logic (ACK/retries) masks RF link drops under the hood rather than exposing raw packet delivery. Once 3-node relay contention arrives in V2, measured collision rates will drive the implementation of channel-sensing (CSMA/CA), followed by formal deterministic TDMA and ACK protocols in V3.
+
+---
+
 # Overall Development Path
 
 ```text
