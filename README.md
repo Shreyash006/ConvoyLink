@@ -92,7 +92,7 @@ Full roadmap detail: [`Documentation/Development_Roadmap.md`](Documentation/Deve
 
 ## Motivation
 
-This project is developed as a long-term, research-oriented undergraduate initiative in embedded systems and wireless networking, intended to support applications to international research programs (e.g., Mitacs Globalink Research Internship, MEXT Scholarship) through demonstrated engineering rigor, empirical validation, and transparent documentation of the design process.
+This project is developed as a long-term, research-oriented undergraduate initiative in embedded systems and wireless networking, intended to support applications to international research programs (e.g., Mitacs Globalink Research Internship, MEXT Scholarship, DAAD WISE, DAAD Study Scholarship, Erasmus Mundus, ETH Zurich ESOP, EPFL Excellence Scholarship) through demonstrated engineering rigor, empirical validation, and transparent documentation of the design process.
 
 ---
 
